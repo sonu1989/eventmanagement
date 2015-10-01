@@ -1,12 +1,9 @@
 class WelcomeController < ApplicationController
   def index
-    params = { category: '1',
-      city: 'London',
-      country: 'GB',
-      status: 'upcoming',
-      format: 'json',
-      page: '50'}
     meetup_api = MeetupApi.new
-    events = meetup_api.open_events(params)
+    events = meetup_api.open_events(params[:meetup_params]) if params[:meetup_params].present?
+    if request.xhr?
+      render json: events
+    end
   end
 end
